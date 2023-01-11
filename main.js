@@ -86,18 +86,46 @@ function draw() {
     surface.Draw();
 }
 
-function CreateSurfaceData()
-{
+function CreateSurfaceData() {
     let vertexList = [];
 
-    for (let i=0; i<360; i+=5) {
-        vertexList.push( Math.sin(deg2rad(i)), 1, Math.cos(deg2rad(i)) );
-        vertexList.push( Math.sin(deg2rad(i)), 0, Math.cos(deg2rad(i)) );
+    let u = 0;
+    let v = 0;
+    let uMax = Math.PI * 2
+    let vMax = Math.PI * 2
+    let uStep = uMax / 50;
+    let vStep = vMax / 50;
+
+    for (let u = 0; u <= uMax; u += uStep) {
+        for (let v = 0; v <= vMax; v += vStep) {
+            let vert = KleinBottle(u, v)
+            let avert = KleinBottle(u + uStep, v)
+            let bvert = KleinBottle(u, v + vStep)
+            let cvert = KleinBottle(u + uStep, v + vStep)
+
+            vertexList.push(vert.x, vert.y, vert.z)
+            vertexList.push(avert.x, avert.y, avert.z)
+            vertexList.push(bvert.x, bvert.y, bvert.z)
+
+            vertexList.push(avert.x, avert.y, avert.z)
+            vertexList.push(cvert.x, cvert.y, cvert.z)
+            vertexList.push(bvert.x, bvert.y, bvert.z)
+        }
     }
 
     return vertexList;
 }
 
+function KleinBottle(u, v) {
+    const multiplier = 0.33;
+    let a = 2.5
+    let uKoef = 1.5
+    let vKoef = 0.5
+    let x = (a + Math.cos(u * uKoef) * Math.sin(v) - Math.sin(u * uKoef) * Math.sin(vKoef * v)) * Math.cos(u)
+    let y = (a + Math.cos(u * uKoef) * Math.sin(v) - Math.sin(u * uKoef) * Math.sin(vKoef * v)) * Math.sin(u)
+    let z = (Math.sin(u * uKoef) * Math.sin(v) + Math.cos(u * uKoef) * Math.sin(vKoef * v));
+    return { x: x * multiplier, y: y * multiplier, z: z * multiplier }
+}
 
 /* Initialize the WebGL context. Called from init() */
 function initGL() {
