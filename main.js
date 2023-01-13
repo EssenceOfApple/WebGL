@@ -107,6 +107,11 @@ function draw() {
     surface.Draw();
 }
 
+function anim() {
+    draw()
+    window.requestAnimationFrame(anim)
+}
+
 function CreateSurfaceData() {
     let vertexList = [];
 
@@ -187,7 +192,7 @@ function vec3Normalize(a) {
 function KleinBottle(u, v) {
     const multiplier = 0.33;
     let a = 2.5
-    let uKoef = 1.5
+    let uKoef = 2
     let vKoef = 0.5
     let x = (a + Math.cos(u * uKoef) * Math.sin(v) - Math.sin(u * uKoef) * Math.sin(vKoef * v)) * Math.cos(u)
     let y = (a + Math.cos(u * uKoef) * Math.sin(v) - Math.sin(u * uKoef) * Math.sin(vKoef * v)) * Math.sin(u)
@@ -278,7 +283,7 @@ function init() {
 
     spaceball = new TrackballRotator(canvas, draw, 0);
 
-    draw()
+    window.requestAnimationFrame(anim);
 }
 
 function mat4Transpose(a, transposed) {
