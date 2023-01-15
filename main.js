@@ -340,3 +340,31 @@ function LoadTexture() {
         draw()
     }
 }
+
+//функція  для зчитування введення  користуача
+//для переміщення точки по поверхні
+window.onkeydown = (e) => {
+    switch (e.keyCode) {
+        case 87:
+            texturePoint.x -= 0.01;
+            break;
+        case 83:
+            texturePoint.x += 0.01;
+            break;
+        case 65:
+            texturePoint.y += 0.01;
+            break;
+        case 68:
+            texturePoint.y -= 0.01;
+            break;
+    }
+    texturePoint.x = Math.max(0.001, Math.min(texturePoint.x, 0.999))
+    texturePoint.y = Math.max(0.001, Math.min(texturePoint.y, 0.999))
+    draw();
+}
+
+// для обертання текстури
+onmousemove = (e) => {
+    rotateValue = map(e.clientX, 0, window.outerWidth, 0, Math.PI)
+    draw()
+};
