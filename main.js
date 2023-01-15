@@ -59,6 +59,29 @@ function Model(name) {
     }
 }
 
+function CreateSphereSurface(r = 0.1) {
+    let vertexList = [];
+    let lon = -Math.PI;
+    let lat = -Math.PI * 0.5;
+    while (lon < Math.PI) {
+        while (lat < Math.PI * 0.5) {
+            let v1 = sphereSurfaceDate(r, lon, lat);
+            vertexList.push(v1.x, v1.y, v1.z);
+            lat += 0.05;
+        }
+        lat = -Math.PI * 0.5
+        lon += 0.05;
+    }
+    return vertexList;
+}
+
+function sphereSurfaceDate(r, u, v) {
+    let x = r * Math.sin(u) * Math.cos(v);
+    let y = r * Math.sin(u) * Math.sin(v);
+    let z = r * Math.cos(u);
+    return { x: x, y: y, z: z };
+}
+
 
 // Constructor
 function ShaderProgram(name, program) {
@@ -114,6 +137,10 @@ function draw() {
     gl.uniform2fv(shProgram.iTexturePoint, [texturePoint.x, texturePoint.y]);
     gl.uniform1f(shProgram.iRotateValue, rotateValue);
     surface.Draw();
+    let tr = KleinBottle(map(texturePoint.x,0,1,0,Math.PI*2),map(texturePoint.y,0,1,0,Math.PI*2))
+    gl.uniform3fv(shProgram.iTranslatePoint, [tr.x, tr.y, tr.z]);
+    gl.uniform1f(shProgram.iRotateValue, 1100);
+    point.DisplayPoint();
 }
 
 function CreateSurfaceData() {
@@ -217,6 +244,9 @@ function initGL() {
     surface.BufferData(CreateSurfaceData());
     LoadTexture()
     surface.TextureBufferData(CreateTexture());
+    point = new Model('Point');
+    point.BufferData(CreateSphereSurface())
+
     gl.enable(gl.DEPTH_TEST);
 }
 
