@@ -326,7 +326,7 @@ function LoadTexture() {
     image.crossOrigin = 'anonymus';
 
     // рядок з посиланням, його необхідно змінити  у всіх версіях ргрки
-    image.src = "https://raw.githubusercontent.com/EssenceOfApple/WebGL/CGW/texture.jpg";
+    image.src = "https://raw.githubusercontent.com/EssenceOfApple/WebGL/main/texture.jpg";
     image.onload = () => {
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.texImage2D(
